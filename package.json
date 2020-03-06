@@ -9,7 +9,6 @@
   },
   "description": "A slider with an indicator for an additional value (e.g. for synths)",
   "author": "Mathias B",
-  "private": true,
   "scripts": {
     "build": "npm run build:umd & npm run build:es & npm run build:unpkg",
     "build:umd": "rollup --config build/rollup.config.js --format umd --file dist/vue-slider-with-indicator.umd.js",
