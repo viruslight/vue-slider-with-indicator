@@ -15,6 +15,10 @@
     "build:es": "rollup --config build/rollup.config.js --format es --file dist/vue-slider-with-indicator.esm.js",
     "build:unpkg": "rollup --config build/rollup.config.js --format iife --file dist/vue-slider-with-indicator.min.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/viruslight/vue-slider-with-indicator"
+  },
   "dependencies": {
     "vue": "^2.5.2"
   },
