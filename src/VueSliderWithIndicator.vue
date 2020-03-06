@@ -1,79 +1,173 @@
-# vue-slider-with-indicator
+<template>
+  <div class="slider-container" :style="containerStyle">
+    <input
+      type="range"
+      class="slider synth-slider"
+      :style="sliderStyle"
+      :max="settings.max"
+      :min="settings.min"
+      :step="settings.step"
+      v-model="calculatedSliderValue"
+    >
+    <input
+      type="range"
+      class="slider modulation-indicator"
+      :style="indicatorStyle"
+      :max="settings.max"
+      :min="settings.min"
+      :step="settings.step" 
+      v-model="indicatorValue"
+    >
+  </div>
+</template>
 
-> A slider for synths
-
-This is a basic Vue.js slider component which in addition to a standard slider handle has an indicator representing an additional value.  
-
-# Usage
-
-Import it as you would a normal component:
-
-`import VueSliderWithIndicator from 'vue-slider-with-indicator'`
-
-In the template:
-
-    <VueSliderWithIndicator 
-      v-model="myValue"
-      :value="myValue"
-      :indicatorPosition="myIndicatorPosition"
-      :options="myOptions"
-    />
-
-The options prop expects an object. It could look like this:
-
-    myOptions {
-      init: 50,
-      min: 0,
-      max: 100,
-      step: 1,
-      style: {
-        sliderWidth: '300px',
-        sliderHeight: '30px',
-        handleWidth: '20px',
-        handleHeight: '20px',
-        indicatorWidth: '3px',
-        indicatorHeight: '25px'
-        backgroundColor: '#333',
-        handleColor: '#115253',
-        indicatorColor: 'rgba(200, 200, 0, 0.8)'
+<script>
+export default {
+  name: 'VueSliderWithIndicator',
+  data () {
+    return {
+      settings: {
+        init: 50,
+        max: 100,
+        min: 0,
+        step: 1,
+        style: {
+          sliderWidth: '500px',
+          sliderHeight: '50px',
+          backgroundColor: 'black',
+          handleWidth: '50px',
+          handleHeight: '50px',
+          handleColor: '#4CAF50',
+          indicatorWidth: '5px',
+          indicatorHeight: '50px',
+          indicatorColor: 'rgba(255, 136, 0, 0.7)'
+        }
       }
     }
+  },
+  props: {
+    sliderValue: Number,
+    indicatorValue: Number,
+    options: Object
+  },
+  computed: {
+    calculatedSliderValue: {
+      get() {
+        return this.sliderValue
+      },
+      set(val) {
+        this.$emit('input', val)
+      }
+    },
+    // Setting up CSS variables from the values of the style object.
+    // Necessary because pseudo elements like the handle can't be
+    // accessed inline.
+    containerStyle () {
+      return {
+        '--sliderWidth': this.settings.style.sliderWidth,
+        '--sliderHeight': this.settings.style.sliderHeight,
+        '--backgroundColor': this.settings.style.backgroundColor
+      }
+    },
+    sliderStyle () {
+      return {
+        '--handleWidth': this.settings.style.handleWidth,
+        '--handleHeight': this.settings.style.handleHeight,
+        '--handleColor': this.settings.style.handleColor
+      }
+    },
+    indicatorStyle () {
+      return {
+        '--indicatorWidth': this.settings.style.indicatorWidth,
+        '--indicatorHeight': this.settings.style.indicatorHeight,
+        '--indicatorColor': this.settings.style.indicatorColor
+      }
+    }
+  },
+  mounted () {
+    if (this.options) {
+      for (let opt in this.options) {
+        if (opt !== 'style') {
+          this.settings[opt] = this.options[opt]
+        }
+      }
+      // If sliderHeight is set, make handle and indicator take up full height
+      if (this.options.style) {
+        if (Object.keys(this.options.style).includes('sliderHeight')) {
+          this.settings.style.handleHeight = this.options.style['sliderHeight']
+          this.settings.style.indicatorHeight = this.options.style['sliderHeight']
+        }
+        for (let styling in this.options.style) {
+          this.settings.style[styling] = this.options.style[styling]
+        }
+      }
+    }
+  }
+}
+</script>
 
-Each property can be omitted, defaulting to the value specified below.
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped>
+.slider-container {
+  width: var(--sliderWidth);
+  height: var(--sliderHeight);
+  display: flex;
+}
 
-# Options
+/* From:
+https://www.w3schools.com/howto/howto_js_rangeslider.asp */
+.slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: var(--sliderWidth);
+  height: var(--sliderHeight);
+  background: var(--backgroundColor);
+}
 
-## Range values
+.synth-slider::-webkit-slider-thumb {
+  -webkit-appearance: none; /* Override default look */
+  appearance: none;
+  width: var(--handleWidth); /* Set a specific slider handle width */
+  height: var(--handleHeight); /* Slider handle height */
+  background: var(--handleColor); /* Green background */
+  border: none;
+  border-radius: 0;
+  cursor: pointer; /* Cursor on hover */
+}
 
-All expect a number.
+.synth-slider::-moz-range-thumb {
+  width: var(--handleWidth); /* Set a specific slider handle width */
+  height: var(--handleHeight); /* Slider handle height */
+  background: var(--handleColor); /* Green background */
+  border: none;
+  border-radius: 0;
+  cursor: pointer; /* Cursor on hover */
+}
 
-- `init`: Initial value the handle is set to, default: 50
+.modulation-indicator {
+  position: absolute;
+  background: none;
+  pointer-events: none;
+  width: var(--sliderWidth);
+  height: var(--sliderHeight);
+}
 
-- `min`: Min value of the slider, default: 0
+.modulation-indicator::-webkit-slider-thumb {
+  -webkit-appearance: none; /* Override default look */
+  appearance: none;
+  width: var(--indicatorWidth); /* Set a specific slider handle width */
+  height: var(--indicatorHeight); /* Slider handle height */
+  background: var(--indicatorColor);
+  border: none;
+  border-radius: 0;
+}
 
-- `max`: Max value of the slider, default: 100
+.modulation-indicator::-moz-range-thumb {
+  width: var(--indicatorWidth); /* Set a specific slider handle width */
+  height: var(--indicatorHeight); /* Slider handle height */
+  background: var(--indicatorColor);
+  border: none;
+  border-radius: 0;
+}
 
-- `step`, default: 1
-
-## Style
-
-Use any combination of value and unit that you would use in CSS.
-All expect a string.
-
-- `sliderWidth`: Width, default: 500px
-
-- `sliderHeight`: Height, default: 50px 
-
-- `handleHeight`: Handle height, default: matching sliderHeight
-
-- `handleWidth`: Handle width, default: 50px
-
-- `indicatorHeight`: Indicator height, default: matching sliderHeight
-
-- `indicatorWidth`: Indicator width, default: 5px
-
-- `backgroundColor`: Background color, default: black
-
-- `handleColor`: Handle color, default: #4CAF50, a greenish color
-
-- `indicatorColor`: Indicator color, default: rgba(255, 136, 0, 0.7), some kind of orange
+</style>
