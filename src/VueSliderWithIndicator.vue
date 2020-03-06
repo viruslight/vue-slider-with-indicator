@@ -15,7 +15,7 @@
       :style="indicatorStyle"
       :max="settings.max"
       :min="settings.min"
-      :step="settings.step" 
+      :step="settings.step"
       v-model="indicatorValue"
     >
   </div>
@@ -52,10 +52,10 @@ export default {
   },
   computed: {
     calculatedSliderValue: {
-      get() {
+      get () {
         return this.sliderValue
       },
-      set(val) {
+      set (val) {
         this.$emit('input', val)
       }
     },
@@ -121,7 +121,7 @@ https://www.w3schools.com/howto/howto_js_rangeslider.asp */
   appearance: none;
   width: var(--sliderWidth);
   height: var(--sliderHeight);
-  background: var(--backgroundColor);
+  background-color: var(--backgroundColor);
 }
 
 .synth-slider::-webkit-slider-thumb {
@@ -129,7 +129,7 @@ https://www.w3schools.com/howto/howto_js_rangeslider.asp */
   appearance: none;
   width: var(--handleWidth); /* Set a specific slider handle width */
   height: var(--handleHeight); /* Slider handle height */
-  background: var(--handleColor); /* Green background */
+  background-color: var(--handleColor); /* Green background */
   border: none;
   border-radius: 0;
   cursor: pointer; /* Cursor on hover */
@@ -138,7 +138,7 @@ https://www.w3schools.com/howto/howto_js_rangeslider.asp */
 .synth-slider::-moz-range-thumb {
   width: var(--handleWidth); /* Set a specific slider handle width */
   height: var(--handleHeight); /* Slider handle height */
-  background: var(--handleColor); /* Green background */
+  background-color: var(--handleColor); /* Green background */
   border: none;
   border-radius: 0;
   cursor: pointer; /* Cursor on hover */
@@ -157,7 +157,7 @@ https://www.w3schools.com/howto/howto_js_rangeslider.asp */
   appearance: none;
   width: var(--indicatorWidth); /* Set a specific slider handle width */
   height: var(--indicatorHeight); /* Slider handle height */
-  background: var(--indicatorColor);
+  background-color: var(--indicatorColor);
   border: none;
   border-radius: 0;
 }
