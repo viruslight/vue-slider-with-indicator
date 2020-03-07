@@ -1,6 +1,6 @@
 {
   "name": "vue-slider-with-indicator",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "main": "dist/vue-slider-with-indicator.umd.js",
   "module": "dist/vue-slider-with-indicator.esm.js",
   "unpkg": "dist/vue-slider-with-indicator.min.js",
