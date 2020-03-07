@@ -1,6 +1,6 @@
 # vue-slider-with-indicator
 
-> A slider for synths
+> A slider for (e.g.) synths
 
 This is a basic Vue.js slider component which in addition to a standard slider handle has an indicator representing an additional value.  
 
@@ -49,46 +49,76 @@ Each property can be omitted, defaulting to the value specified below.
 
 All expect a number.
 
-- `init`: Initial value the handle is set to, default: 50
+- `init`:
+Sets the handle's initial value.
+Default is `50`.
 
-- `min`: Min value of the slider, default: 0
+- `min`:
+Sets the min value of the slider.
+Default is `0`.
 
-- `max`: Max value of the slider, default: 100
+- `max`:
+Sets the max value of the slider.
+Default is `100`.
 
-- `step`, default: 1
+- `step`:
+Sets the stepping interval.
+Default is `1`.
 
 ## Style
 
-Use any combination of value and unit that you would use in CSS.
-
-The following expect a boolean:
+### The following expects a boolean:
 
 - `vertical`:
 If set to `true` the slider will be vertical instead of horizontal.
-Min will be at the bottom, max will be at the top.
+`min` will be at the bottom, `max` will be at the top.
 Default is `false`.
 
-The following expect a string:
+Please note that `width`s and `height`s are flipped as well. If you set `vertical: true` you will have to change the `sliderWidth` if you want to to change the slider's height.
+
+### The following expect a string:
 
 - `direction`:
-If set to `'rtl'` min will be at the right, max will be at the left.
-If combined with `vertical: true` min will be at the top, max will be at the bottom.
-Default is `'ltr'`.
+If set to `'rtl'` (right to left) `min` will be at the right, `max` will be at the left.
+If combined with `vertical: true`, `min` will be at the top, `max` will be at the bottom.
+Default is `'ltr'` (left to right).
 
-- `sliderWidth`: Width, default: 500px
+For the following, use any combination of value and unit that you would use in CSS:
 
-- `sliderHeight`: Height, default: 50px 
+- `sliderWidth`:
+Sets the slider's width.
+Default ist `'500px'`.
 
-- `handleHeight`: Handle height, default: matching sliderHeight
+- `sliderHeight`:
+Sets the slider's height.
+Default is `'50px'`.
 
-- `handleWidth`: Handle width, default: 50px
+- `handleHeight`:
+Sets the handle's height.
+Default is matching `sliderHeight`.
 
-- `indicatorHeight`: Indicator height, default: matching sliderHeight
+- `handleWidth`:
+Sets the handle's width.
+Default is `'50px'`.
 
-- `indicatorWidth`: Indicator width, default: 5px
+- `indicatorHeight`:
+Sets the indicator's height.
+Default is matching `sliderHeight`.
 
-- `backgroundColor`: Background color, default: black
+- `indicatorWidth`:
+Sets the indicator's width.
+Default is `'5px'`.
 
-- `handleColor`: Handle color, default: #4CAF50, a greenish color
+For the following, use any color that you would use in CSS:
 
-- `indicatorColor`: Indicator color, default: rgba(255, 136, 0, 0.7), some kind of orange
+- `backgroundColor`:
+Sets the slider's background color.
+Default is `'black'`.
+
+- `handleColor`:
+Sets the handle's color.
+Default is `'#4CAF50'`, a greenish color.
+
+- `indicatorColor`:
+Sets the indicator's color.
+Default is `'rgba(255, 136, 0, 0.7)'`, some kind of orange.
