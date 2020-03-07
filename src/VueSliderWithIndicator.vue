@@ -27,7 +27,7 @@ export default {
   data () {
     return {
       settings: {
-        init: 20,
+        init: 50,
         max: 100,
         min: 0,
         step: 1,
@@ -106,7 +106,10 @@ export default {
   mounted () {
 
     if (isNaN(this.sliderValue)) {
-      console.error(`Expected Number for 'sliderValue', instead got ${this.sliderValue}`)
+      console.error(`Expected Number for 'sliderValue', instead got ${this.sliderValue}.`)
+    }
+    if (isNaN(this.indicatorValue)) {
+      console.error(`Expected Number for 'indicatorValue', instead got ${this.indicatorValue}.`)
     }
 
     if (this.options) {
