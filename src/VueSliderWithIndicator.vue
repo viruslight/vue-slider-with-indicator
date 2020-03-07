@@ -48,14 +48,18 @@ export default {
     }
   },
   props: {
-    sliderValue: [Number, String],
-    indicatorValue: [Number, String],
+    sliderValue: Number,
+    indicatorValue: Number,
     options: Object
   },
   computed: {
     calculatedSliderValue: {
       get () {
-        return this.sliderValue || this.settings.init
+        const valueOrDefault =
+          this.sliderValue === 'undefined'
+          ? this.settings.init
+          : this.sliderValue
+        return valueOrDefault
       },
       set (val) {
         this.$emit('input', val)
@@ -100,6 +104,11 @@ export default {
     }
   },
   mounted () {
+
+    if (isNaN(this.sliderValue)) {
+      console.error(`Expected Number for 'sliderValue', instead got ${this.sliderValue}`)
+    }
+
     if (this.options) {
       for (let opt in this.options) {
         if (opt !== 'style') {
