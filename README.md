@@ -27,6 +27,8 @@ The options prop expects an object. It could look like this:
       max: 100,
       step: 1,
       style: {
+        vertical: true,
+        direction: 'rtl',
         sliderWidth: '300px',
         sliderHeight: '30px',
         handleWidth: '20px',
@@ -58,7 +60,20 @@ All expect a number.
 ## Style
 
 Use any combination of value and unit that you would use in CSS.
-All expect a string.
+
+The following expect a boolean:
+
+- `vertical`:
+If set to `true` the slider will be vertical instead of horizontal.
+Min will be at the bottom, max will be at the top.
+Default is `false`.
+
+The following expect a string:
+
+- `direction`:
+If set to `'rtl'` min will be at the right, max will be at the left.
+If combined with `vertical: true` min will be at the top, max will be at the bottom.
+Default is `'ltr'`.
 
 - `sliderWidth`: Width, default: 500px
 

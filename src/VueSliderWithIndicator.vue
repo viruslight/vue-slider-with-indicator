@@ -27,11 +27,13 @@ export default {
   data () {
     return {
       settings: {
-        init: 50,
+        init: 20,
         max: 100,
         min: 0,
         step: 1,
         style: {
+          vertical: false,
+          direction: 'ltr',
           sliderWidth: '500px',
           sliderHeight: '50px',
           backgroundColor: 'black',
@@ -46,14 +48,14 @@ export default {
     }
   },
   props: {
-    sliderValue: Number,
-    indicatorValue: Number,
+    sliderValue: [Number, String],
+    indicatorValue: [Number, String],
     options: Object
   },
   computed: {
     calculatedSliderValue: {
       get () {
-        return this.sliderValue
+        return this.sliderValue || this.settings.init
       },
       set (val) {
         this.$emit('input', val)
@@ -63,10 +65,23 @@ export default {
     // Necessary because pseudo elements like the handle can't be
     // accessed inline.
     containerStyle () {
+      let transformOrigin = null
+      let rotation = null
+      if (this.settings.style.vertical) {
+        const sliderWidth = this.settings.style.sliderWidth
+        const widthValue = sliderWidth.match(/\d+/g)[0]
+        const widthUnit = sliderWidth.slice(sliderWidth.match(/\d+/g)[0].length)
+        transformOrigin = `${widthValue / 2 + widthUnit} ${widthValue / 2 + widthUnit}`
+        rotation = 'rotate(-90deg)'
+      }
+
       return {
         '--sliderWidth': this.settings.style.sliderWidth,
         '--sliderHeight': this.settings.style.sliderHeight,
-        '--backgroundColor': this.settings.style.backgroundColor
+        '--backgroundColor': this.settings.style.backgroundColor,
+        '--transformOrigin': transformOrigin,
+        '--rotation': rotation,
+        '--direction': this.settings.style.direction
       }
     },
     sliderStyle () {
@@ -122,6 +137,9 @@ https://www.w3schools.com/howto/howto_js_rangeslider.asp */
   width: var(--sliderWidth);
   height: var(--sliderHeight);
   background-color: var(--backgroundColor);
+  transform-origin: var(--transformOrigin);
+  transform: var(--rotation);
+  direction: var(--direction);
 }
 
 .synth-slider::-webkit-slider-thumb {
@@ -148,8 +166,6 @@ https://www.w3schools.com/howto/howto_js_rangeslider.asp */
   position: absolute;
   background: none;
   pointer-events: none;
-  width: var(--sliderWidth);
-  height: var(--sliderHeight);
 }
 
 .modulation-indicator::-webkit-slider-thumb {
