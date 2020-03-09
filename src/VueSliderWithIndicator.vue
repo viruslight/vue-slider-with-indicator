@@ -103,9 +103,17 @@ export default {
   },
   watch: {
     options: function (to, from) {
-      for (const option of Object.keys(to)) {
-        this.settings[option] = to[option]
+      // Oldschool loop because buble (ES5 transpiler) doesn't like for...of
+      const settingsList = Object.keys(to)
+      for (let i = 0; i < settingsList.length; i++) {
+        const currentSetting = settingsList[i]
+        this.settings[currentSetting] = to[currentSetting]
       }
+
+      // Use this if buble can do it at some point
+      // for (const option of Object.keys(to)) {
+      //   this.settings[option] = to[option]
+      // }
     }
   },
   mounted () {
