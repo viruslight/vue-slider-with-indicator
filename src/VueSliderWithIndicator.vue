@@ -34,7 +34,7 @@ export default {
         style: {
           vertical: false,
           direction: 'ltr',
-          sliderWidth: '500px',
+          sliderWidth: this.sliderWidth,
           sliderHeight: '50px',
           backgroundColor: 'black',
           handleWidth: '50px',
@@ -103,6 +103,13 @@ export default {
       }
     }
   },
+  watch: {
+    options: function (to, from) {
+      for (const option of to) {
+        // update
+      }
+    }
+  },
   mounted () {
 
     if (isNaN(this.sliderValue)) {
@@ -136,9 +143,9 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .slider-container {
+  position: relative;
   width: var(--sliderWidth);
   height: var(--sliderHeight);
-  display: flex;
 }
 
 /* From:
@@ -146,8 +153,8 @@ https://www.w3schools.com/howto/howto_js_rangeslider.asp */
 .slider {
   -webkit-appearance: none;
   appearance: none;
-  width: var(--sliderWidth);
-  height: var(--sliderHeight);
+  width: 100%;
+  height: 100%;
   background-color: var(--backgroundColor);
   transform-origin: var(--transformOrigin);
   transform: var(--rotation);
@@ -178,6 +185,7 @@ https://www.w3schools.com/howto/howto_js_rangeslider.asp */
   position: absolute;
   background: none;
   pointer-events: none;
+  top: 0;
 }
 
 .modulation-indicator::-webkit-slider-thumb {
