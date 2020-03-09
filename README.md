@@ -26,19 +26,17 @@ The options prop expects an object. It could look like this:
       min: 0,
       max: 100,
       step: 1,
-      style: {
-        vertical: true,
-        direction: 'rtl',
-        sliderWidth: '300px',
-        sliderHeight: '30px',
-        handleWidth: '20px',
-        handleHeight: '20px',
-        indicatorWidth: '3px',
-        indicatorHeight: '25px'
-        backgroundColor: '#333',
-        handleColor: '#115253',
-        indicatorColor: 'rgba(200, 200, 0, 0.8)'
-      }
+      vertical: true,
+      direction: 'rtl',
+      sliderWidth: '300px',
+      sliderHeight: '30px',
+      handleWidth: '20px',
+      handleHeight: '20px',
+      indicatorWidth: '3px',
+      indicatorHeight: '25px'
+      backgroundColor: '#333',
+      handleColor: '#115253',
+      indicatorColor: 'rgba(200, 200, 0, 0.8)'
     }
 
 Each property can be omitted, defaulting to the value specified below.
