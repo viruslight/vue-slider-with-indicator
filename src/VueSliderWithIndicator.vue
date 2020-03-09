@@ -31,19 +31,17 @@ export default {
         max: 100,
         min: 0,
         step: 1,
-        style: {
-          vertical: false,
-          direction: 'ltr',
-          sliderWidth: this.sliderWidth,
-          sliderHeight: '50px',
-          backgroundColor: 'black',
-          handleWidth: '50px',
-          handleHeight: '50px',
-          handleColor: '#4CAF50',
-          indicatorWidth: '5px',
-          indicatorHeight: '50px',
-          indicatorColor: 'rgba(255, 136, 0, 0.7)'
-        }
+        vertical: false,
+        direction: 'ltr',
+        sliderWidth: this.sliderWidth,
+        sliderHeight: '50px',
+        backgroundColor: 'black',
+        handleWidth: '50px',
+        handleHeight: '50px',
+        handleColor: '#4CAF50',
+        indicatorWidth: '5px',
+        indicatorHeight: '50px',
+        indicatorColor: 'rgba(255, 136, 0, 0.7)'
       }
     }
   },
@@ -71,8 +69,8 @@ export default {
     containerStyle () {
       let transformOrigin = null
       let rotation = null
-      if (this.settings.style.vertical) {
-        const sliderWidth = this.settings.style.sliderWidth
+      if (this.settings.vertical) {
+        const sliderWidth = this.settings.sliderWidth
         const widthValue = sliderWidth.match(/\d+/g)[0]
         const widthUnit = sliderWidth.slice(sliderWidth.match(/\d+/g)[0].length)
         transformOrigin = `${widthValue / 2 + widthUnit} ${widthValue / 2 + widthUnit}`
@@ -80,33 +78,33 @@ export default {
       }
 
       return {
-        '--sliderWidth': this.settings.style.sliderWidth,
-        '--sliderHeight': this.settings.style.sliderHeight,
-        '--backgroundColor': this.settings.style.backgroundColor,
+        '--sliderWidth': this.settings.sliderWidth,
+        '--sliderHeight': this.settings.sliderHeight,
+        '--backgroundColor': this.settings.backgroundColor,
         '--transformOrigin': transformOrigin,
         '--rotation': rotation,
-        '--direction': this.settings.style.direction
+        '--direction': this.settings.direction
       }
     },
     sliderStyle () {
       return {
-        '--handleWidth': this.settings.style.handleWidth,
-        '--handleHeight': this.settings.style.handleHeight,
-        '--handleColor': this.settings.style.handleColor
+        '--handleWidth': this.settings.handleWidth,
+        '--handleHeight': this.settings.handleHeight,
+        '--handleColor': this.settings.handleColor
       }
     },
     indicatorStyle () {
       return {
-        '--indicatorWidth': this.settings.style.indicatorWidth,
-        '--indicatorHeight': this.settings.style.indicatorHeight,
-        '--indicatorColor': this.settings.style.indicatorColor
+        '--indicatorWidth': this.settings.indicatorWidth,
+        '--indicatorHeight': this.settings.indicatorHeight,
+        '--indicatorColor': this.settings.indicatorColor
       }
     }
   },
   watch: {
     options: function (to, from) {
-      for (const option of to) {
-        // update
+      for (const option of Object.keys(to)) {
+        this.settings[option] = to[option]
       }
     }
   },
@@ -126,14 +124,9 @@ export default {
         }
       }
       // If sliderHeight is set, make handle and indicator take up full height
-      if (this.options.style) {
-        if (Object.keys(this.options.style).includes('sliderHeight')) {
-          this.settings.style.handleHeight = this.options.style['sliderHeight']
-          this.settings.style.indicatorHeight = this.options.style['sliderHeight']
-        }
-        for (let styling in this.options.style) {
-          this.settings.style[styling] = this.options.style[styling]
-        }
+      if (Object.keys(this.options).includes('sliderHeight')) {
+        this.settings.handleHeight = this.options['sliderHeight']
+        this.settings.indicatorHeight = this.options['sliderHeight']
       }
     }
   }
