@@ -37,19 +37,17 @@
           max: 100,
           min: 0,
           step: 1,
-          style: {
-            vertical: false,
-            direction: 'ltr',
-            sliderWidth: '500px',
-            sliderHeight: '50px',
-            backgroundColor: 'black',
-            handleWidth: '50px',
-            handleHeight: '50px',
-            handleColor: '#4CAF50',
-            indicatorWidth: '5px',
-            indicatorHeight: '50px',
-            indicatorColor: 'rgba(255, 136, 0, 0.7)'
-          }
+          vertical: false,
+          direction: 'ltr',
+          sliderWidth: this.sliderWidth,
+          sliderHeight: '50px',
+          backgroundColor: 'black',
+          handleWidth: '50px',
+          handleHeight: '50px',
+          handleColor: '#4CAF50',
+          indicatorWidth: '5px',
+          indicatorHeight: '50px',
+          indicatorColor: 'rgba(255, 136, 0, 0.7)'
         }
       }
     },
@@ -77,8 +75,8 @@
       containerStyle: function containerStyle () {
         var transformOrigin = null;
         var rotation = null;
-        if (this.settings.style.vertical) {
-          var sliderWidth = this.settings.style.sliderWidth;
+        if (this.settings.vertical) {
+          var sliderWidth = this.settings.sliderWidth;
           var widthValue = sliderWidth.match(/\d+/g)[0];
           var widthUnit = sliderWidth.slice(sliderWidth.match(/\d+/g)[0].length);
           transformOrigin = (widthValue / 2 + widthUnit) + " " + (widthValue / 2 + widthUnit);
@@ -86,27 +84,42 @@
         }
 
         return {
-          '--sliderWidth': this.settings.style.sliderWidth,
-          '--sliderHeight': this.settings.style.sliderHeight,
-          '--backgroundColor': this.settings.style.backgroundColor,
+          '--sliderWidth': this.settings.sliderWidth,
+          '--sliderHeight': this.settings.sliderHeight,
+          '--backgroundColor': this.settings.backgroundColor,
           '--transformOrigin': transformOrigin,
           '--rotation': rotation,
-          '--direction': this.settings.style.direction
+          '--direction': this.settings.direction
         }
       },
       sliderStyle: function sliderStyle () {
         return {
-          '--handleWidth': this.settings.style.handleWidth,
-          '--handleHeight': this.settings.style.handleHeight,
-          '--handleColor': this.settings.style.handleColor
+          '--handleWidth': this.settings.handleWidth,
+          '--handleHeight': this.settings.handleHeight,
+          '--handleColor': this.settings.handleColor
         }
       },
       indicatorStyle: function indicatorStyle () {
         return {
-          '--indicatorWidth': this.settings.style.indicatorWidth,
-          '--indicatorHeight': this.settings.style.indicatorHeight,
-          '--indicatorColor': this.settings.style.indicatorColor
+          '--indicatorWidth': this.settings.indicatorWidth,
+          '--indicatorHeight': this.settings.indicatorHeight,
+          '--indicatorColor': this.settings.indicatorColor
         }
+      }
+    },
+    watch: {
+      options: function (to, from) {
+        // Oldschool loop because buble (ES5 transpiler) doesn't like for...of
+        var settingsList = Object.keys(to);
+        for (var i = 0; i < settingsList.length; i++) {
+          var currentSetting = settingsList[i];
+          this.settings[currentSetting] = to[currentSetting];
+        }
+
+        // Use this if buble can do it at some point
+        // for (const option of Object.keys(to)) {
+        //   this.settings[option] = to[option]
+        // }
       }
     },
     mounted: function mounted () {
@@ -125,14 +138,9 @@
           }
         }
         // If sliderHeight is set, make handle and indicator take up full height
-        if (this.options.style) {
-          if (Object.keys(this.options.style).includes('sliderHeight')) {
-            this.settings.style.handleHeight = this.options.style['sliderHeight'];
-            this.settings.style.indicatorHeight = this.options.style['sliderHeight'];
-          }
-          for (var styling in this.options.style) {
-            this.settings.style[styling] = this.options.style[styling];
-          }
+        if (Object.keys(this.options).includes('sliderHeight')) {
+          this.settings.handleHeight = this.options['sliderHeight'];
+          this.settings.indicatorHeight = this.options['sliderHeight'];
         }
       }
     }
@@ -336,11 +344,11 @@
     /* style */
     var __vue_inject_styles__ = function (inject) {
       if (!inject) { return }
-      inject("data-v-909eb764_0", { source: "\n.slider-container[data-v-909eb764] {\n  width: var(--sliderWidth);\n  height: var(--sliderHeight);\n  display: flex;\n}\n\n/* From:\nhttps://www.w3schools.com/howto/howto_js_rangeslider.asp */\n.slider[data-v-909eb764] {\n  -webkit-appearance: none;\n  appearance: none;\n  width: var(--sliderWidth);\n  height: var(--sliderHeight);\n  background-color: var(--backgroundColor);\n  transform-origin: var(--transformOrigin);\n  transform: var(--rotation);\n  direction: var(--direction);\n}\n.synth-slider[data-v-909eb764]::-webkit-slider-thumb {\n  -webkit-appearance: none; /* Override default look */\n  appearance: none;\n  width: var(--handleWidth); /* Set a specific slider handle width */\n  height: var(--handleHeight); /* Slider handle height */\n  background-color: var(--handleColor); /* Green background */\n  border: none;\n  border-radius: 0;\n  cursor: pointer; /* Cursor on hover */\n}\n.synth-slider[data-v-909eb764]::-moz-range-thumb {\n  width: var(--handleWidth); /* Set a specific slider handle width */\n  height: var(--handleHeight); /* Slider handle height */\n  background-color: var(--handleColor); /* Green background */\n  border: none;\n  border-radius: 0;\n  cursor: pointer; /* Cursor on hover */\n}\n.modulation-indicator[data-v-909eb764] {\n  position: absolute;\n  background: none;\n  pointer-events: none;\n}\n.modulation-indicator[data-v-909eb764]::-webkit-slider-thumb {\n  -webkit-appearance: none; /* Override default look */\n  appearance: none;\n  width: var(--indicatorWidth); /* Set a specific slider handle width */\n  height: var(--indicatorHeight); /* Slider handle height */\n  background-color: var(--indicatorColor);\n  border: none;\n  border-radius: 0;\n}\n.modulation-indicator[data-v-909eb764]::-moz-range-thumb {\n  width: var(--indicatorWidth); /* Set a specific slider handle width */\n  height: var(--indicatorHeight); /* Slider handle height */\n  background: var(--indicatorColor);\n  border: none;\n  border-radius: 0;\n}\n\n", map: {"version":3,"sources":["D:\\projects\\npm\\VueSliderWithIndicator\\src\\VueSliderWithIndicator.vue"],"names":[],"mappings":";AAyIA;EACA,yBAAA;EACA,2BAAA;EACA,aAAA;AACA;;AAEA;0DACA;AACA;EACA,wBAAA;EACA,gBAAA;EACA,yBAAA;EACA,2BAAA;EACA,wCAAA;EACA,wCAAA;EACA,0BAAA;EACA,2BAAA;AACA;AAEA;EACA,wBAAA,EAAA,0BAAA;EACA,gBAAA;EACA,yBAAA,EAAA,uCAAA;EACA,2BAAA,EAAA,yBAAA;EACA,oCAAA,EAAA,qBAAA;EACA,YAAA;EACA,gBAAA;EACA,eAAA,EAAA,oBAAA;AACA;AAEA;EACA,yBAAA,EAAA,uCAAA;EACA,2BAAA,EAAA,yBAAA;EACA,oCAAA,EAAA,qBAAA;EACA,YAAA;EACA,gBAAA;EACA,eAAA,EAAA,oBAAA;AACA;AAEA;EACA,kBAAA;EACA,gBAAA;EACA,oBAAA;AACA;AAEA;EACA,wBAAA,EAAA,0BAAA;EACA,gBAAA;EACA,4BAAA,EAAA,uCAAA;EACA,8BAAA,EAAA,yBAAA;EACA,uCAAA;EACA,YAAA;EACA,gBAAA;AACA;AAEA;EACA,4BAAA,EAAA,uCAAA;EACA,8BAAA,EAAA,yBAAA;EACA,iCAAA;EACA,YAAA;EACA,gBAAA;AACA","file":"VueSliderWithIndicator.vue","sourcesContent":["<template>\n  <div class=\"slider-container\" :style=\"containerStyle\">\n    <input\n      type=\"range\"\n      class=\"slider synth-slider\"\n      :style=\"sliderStyle\"\n      :max=\"settings.max\"\n      :min=\"settings.min\"\n      :step=\"settings.step\"\n      v-model=\"calculatedSliderValue\"\n    >\n    <input\n      type=\"range\"\n      class=\"slider modulation-indicator\"\n      :style=\"indicatorStyle\"\n      :max=\"settings.max\"\n      :min=\"settings.min\"\n      :step=\"settings.step\"\n      v-model=\"indicatorValue\"\n    >\n  </div>\n</template>\n\n<script>\nexport default {\n  name: 'VueSliderWithIndicator',\n  data () {\n    return {\n      settings: {\n        init: 50,\n        max: 100,\n        min: 0,\n        step: 1,\n        style: {\n          vertical: false,\n          direction: 'ltr',\n          sliderWidth: '500px',\n          sliderHeight: '50px',\n          backgroundColor: 'black',\n          handleWidth: '50px',\n          handleHeight: '50px',\n          handleColor: '#4CAF50',\n          indicatorWidth: '5px',\n          indicatorHeight: '50px',\n          indicatorColor: 'rgba(255, 136, 0, 0.7)'\n        }\n      }\n    }\n  },\n  props: {\n    sliderValue: Number,\n    indicatorValue: Number,\n    options: Object\n  },\n  computed: {\n    calculatedSliderValue: {\n      get () {\n        const valueOrDefault =\n          this.sliderValue === 'undefined'\n          ? this.settings.init\n          : this.sliderValue\n        return valueOrDefault\n      },\n      set (val) {\n        this.$emit('input', val)\n      }\n    },\n    // Setting up CSS variables from the values of the style object.\n    // Necessary because pseudo elements like the handle can't be\n    // accessed inline.\n    containerStyle () {\n      let transformOrigin = null\n      let rotation = null\n      if (this.settings.style.vertical) {\n        const sliderWidth = this.settings.style.sliderWidth\n        const widthValue = sliderWidth.match(/\\d+/g)[0]\n        const widthUnit = sliderWidth.slice(sliderWidth.match(/\\d+/g)[0].length)\n        transformOrigin = `${widthValue / 2 + widthUnit} ${widthValue / 2 + widthUnit}`\n        rotation = 'rotate(-90deg)'\n      }\n\n      return {\n        '--sliderWidth': this.settings.style.sliderWidth,\n        '--sliderHeight': this.settings.style.sliderHeight,\n        '--backgroundColor': this.settings.style.backgroundColor,\n        '--transformOrigin': transformOrigin,\n        '--rotation': rotation,\n        '--direction': this.settings.style.direction\n      }\n    },\n    sliderStyle () {\n      return {\n        '--handleWidth': this.settings.style.handleWidth,\n        '--handleHeight': this.settings.style.handleHeight,\n        '--handleColor': this.settings.style.handleColor\n      }\n    },\n    indicatorStyle () {\n      return {\n        '--indicatorWidth': this.settings.style.indicatorWidth,\n        '--indicatorHeight': this.settings.style.indicatorHeight,\n        '--indicatorColor': this.settings.style.indicatorColor\n      }\n    }\n  },\n  mounted () {\n\n    if (isNaN(this.sliderValue)) {\n      console.error(`Expected Number for 'sliderValue', instead got ${this.sliderValue}.`)\n    }\n    if (isNaN(this.indicatorValue)) {\n      console.error(`Expected Number for 'indicatorValue', instead got ${this.indicatorValue}.`)\n    }\n\n    if (this.options) {\n      for (let opt in this.options) {\n        if (opt !== 'style') {\n          this.settings[opt] = this.options[opt]\n        }\n      }\n      // If sliderHeight is set, make handle and indicator take up full height\n      if (this.options.style) {\n        if (Object.keys(this.options.style).includes('sliderHeight')) {\n          this.settings.style.handleHeight = this.options.style['sliderHeight']\n          this.settings.style.indicatorHeight = this.options.style['sliderHeight']\n        }\n        for (let styling in this.options.style) {\n          this.settings.style[styling] = this.options.style[styling]\n        }\n      }\n    }\n  }\n}\n</script>\n\n<!-- Add \"scoped\" attribute to limit CSS to this component only -->\n<style scoped>\n.slider-container {\n  width: var(--sliderWidth);\n  height: var(--sliderHeight);\n  display: flex;\n}\n\n/* From:\nhttps://www.w3schools.com/howto/howto_js_rangeslider.asp */\n.slider {\n  -webkit-appearance: none;\n  appearance: none;\n  width: var(--sliderWidth);\n  height: var(--sliderHeight);\n  background-color: var(--backgroundColor);\n  transform-origin: var(--transformOrigin);\n  transform: var(--rotation);\n  direction: var(--direction);\n}\n\n.synth-slider::-webkit-slider-thumb {\n  -webkit-appearance: none; /* Override default look */\n  appearance: none;\n  width: var(--handleWidth); /* Set a specific slider handle width */\n  height: var(--handleHeight); /* Slider handle height */\n  background-color: var(--handleColor); /* Green background */\n  border: none;\n  border-radius: 0;\n  cursor: pointer; /* Cursor on hover */\n}\n\n.synth-slider::-moz-range-thumb {\n  width: var(--handleWidth); /* Set a specific slider handle width */\n  height: var(--handleHeight); /* Slider handle height */\n  background-color: var(--handleColor); /* Green background */\n  border: none;\n  border-radius: 0;\n  cursor: pointer; /* Cursor on hover */\n}\n\n.modulation-indicator {\n  position: absolute;\n  background: none;\n  pointer-events: none;\n}\n\n.modulation-indicator::-webkit-slider-thumb {\n  -webkit-appearance: none; /* Override default look */\n  appearance: none;\n  width: var(--indicatorWidth); /* Set a specific slider handle width */\n  height: var(--indicatorHeight); /* Slider handle height */\n  background-color: var(--indicatorColor);\n  border: none;\n  border-radius: 0;\n}\n\n.modulation-indicator::-moz-range-thumb {\n  width: var(--indicatorWidth); /* Set a specific slider handle width */\n  height: var(--indicatorHeight); /* Slider handle height */\n  background: var(--indicatorColor);\n  border: none;\n  border-radius: 0;\n}\n\n</style>\n"]}, media: undefined });
+      inject("data-v-88c1ade8_0", { source: "\n.slider-container[data-v-88c1ade8] {\n  position: relative;\n  width: var(--sliderWidth);\n  height: var(--sliderHeight);\n}\n\n/* From:\nhttps://www.w3schools.com/howto/howto_js_rangeslider.asp */\n.slider[data-v-88c1ade8] {\n  -webkit-appearance: none;\n  appearance: none;\n  width: 100%;\n  height: 100%;\n  background-color: var(--backgroundColor);\n  transform-origin: var(--transformOrigin);\n  transform: var(--rotation);\n  direction: var(--direction);\n}\n.synth-slider[data-v-88c1ade8]::-webkit-slider-thumb {\n  -webkit-appearance: none; /* Override default look */\n  appearance: none;\n  width: var(--handleWidth); /* Set a specific slider handle width */\n  height: var(--handleHeight); /* Slider handle height */\n  background-color: var(--handleColor); /* Green background */\n  border: none;\n  border-radius: 0;\n  cursor: pointer; /* Cursor on hover */\n}\n.synth-slider[data-v-88c1ade8]::-moz-range-thumb {\n  width: var(--handleWidth); /* Set a specific slider handle width */\n  height: var(--handleHeight); /* Slider handle height */\n  background-color: var(--handleColor); /* Green background */\n  border: none;\n  border-radius: 0;\n  cursor: pointer; /* Cursor on hover */\n}\n.modulation-indicator[data-v-88c1ade8] {\n  position: absolute;\n  background: none;\n  pointer-events: none;\n  top: 0;\n}\n.modulation-indicator[data-v-88c1ade8]::-webkit-slider-thumb {\n  -webkit-appearance: none; /* Override default look */\n  appearance: none;\n  width: var(--indicatorWidth); /* Set a specific slider handle width */\n  height: var(--indicatorHeight); /* Slider handle height */\n  background-color: var(--indicatorColor);\n  border: none;\n  border-radius: 0;\n}\n.modulation-indicator[data-v-88c1ade8]::-moz-range-thumb {\n  width: var(--indicatorWidth); /* Set a specific slider handle width */\n  height: var(--indicatorHeight); /* Slider handle height */\n  background: var(--indicatorColor);\n  border: none;\n  border-radius: 0;\n}\n\n", map: {"version":3,"sources":["D:\\projects\\npm\\VueSliderWithIndicator\\src\\VueSliderWithIndicator.vue"],"names":[],"mappings":";AAiJA;EACA,kBAAA;EACA,yBAAA;EACA,2BAAA;AACA;;AAEA;0DACA;AACA;EACA,wBAAA;EACA,gBAAA;EACA,WAAA;EACA,YAAA;EACA,wCAAA;EACA,wCAAA;EACA,0BAAA;EACA,2BAAA;AACA;AAEA;EACA,wBAAA,EAAA,0BAAA;EACA,gBAAA;EACA,yBAAA,EAAA,uCAAA;EACA,2BAAA,EAAA,yBAAA;EACA,oCAAA,EAAA,qBAAA;EACA,YAAA;EACA,gBAAA;EACA,eAAA,EAAA,oBAAA;AACA;AAEA;EACA,yBAAA,EAAA,uCAAA;EACA,2BAAA,EAAA,yBAAA;EACA,oCAAA,EAAA,qBAAA;EACA,YAAA;EACA,gBAAA;EACA,eAAA,EAAA,oBAAA;AACA;AAEA;EACA,kBAAA;EACA,gBAAA;EACA,oBAAA;EACA,MAAA;AACA;AAEA;EACA,wBAAA,EAAA,0BAAA;EACA,gBAAA;EACA,4BAAA,EAAA,uCAAA;EACA,8BAAA,EAAA,yBAAA;EACA,uCAAA;EACA,YAAA;EACA,gBAAA;AACA;AAEA;EACA,4BAAA,EAAA,uCAAA;EACA,8BAAA,EAAA,yBAAA;EACA,iCAAA;EACA,YAAA;EACA,gBAAA;AACA","file":"VueSliderWithIndicator.vue","sourcesContent":["<template>\n  <div class=\"slider-container\" :style=\"containerStyle\">\n    <input\n      type=\"range\"\n      class=\"slider synth-slider\"\n      :style=\"sliderStyle\"\n      :max=\"settings.max\"\n      :min=\"settings.min\"\n      :step=\"settings.step\"\n      v-model=\"calculatedSliderValue\"\n    >\n    <input\n      type=\"range\"\n      class=\"slider modulation-indicator\"\n      :style=\"indicatorStyle\"\n      :max=\"settings.max\"\n      :min=\"settings.min\"\n      :step=\"settings.step\"\n      v-model=\"indicatorValue\"\n    >\n  </div>\n</template>\n\n<script>\nexport default {\n  name: 'VueSliderWithIndicator',\n  data () {\n    return {\n      settings: {\n        init: 50,\n        max: 100,\n        min: 0,\n        step: 1,\n        vertical: false,\n        direction: 'ltr',\n        sliderWidth: this.sliderWidth,\n        sliderHeight: '50px',\n        backgroundColor: 'black',\n        handleWidth: '50px',\n        handleHeight: '50px',\n        handleColor: '#4CAF50',\n        indicatorWidth: '5px',\n        indicatorHeight: '50px',\n        indicatorColor: 'rgba(255, 136, 0, 0.7)'\n      }\n    }\n  },\n  props: {\n    sliderValue: Number,\n    indicatorValue: Number,\n    options: Object\n  },\n  computed: {\n    calculatedSliderValue: {\n      get () {\n        const valueOrDefault =\n          this.sliderValue === 'undefined'\n          ? this.settings.init\n          : this.sliderValue\n        return valueOrDefault\n      },\n      set (val) {\n        this.$emit('input', val)\n      }\n    },\n    // Setting up CSS variables from the values of the style object.\n    // Necessary because pseudo elements like the handle can't be\n    // accessed inline.\n    containerStyle () {\n      let transformOrigin = null\n      let rotation = null\n      if (this.settings.vertical) {\n        const sliderWidth = this.settings.sliderWidth\n        const widthValue = sliderWidth.match(/\\d+/g)[0]\n        const widthUnit = sliderWidth.slice(sliderWidth.match(/\\d+/g)[0].length)\n        transformOrigin = `${widthValue / 2 + widthUnit} ${widthValue / 2 + widthUnit}`\n        rotation = 'rotate(-90deg)'\n      }\n\n      return {\n        '--sliderWidth': this.settings.sliderWidth,\n        '--sliderHeight': this.settings.sliderHeight,\n        '--backgroundColor': this.settings.backgroundColor,\n        '--transformOrigin': transformOrigin,\n        '--rotation': rotation,\n        '--direction': this.settings.direction\n      }\n    },\n    sliderStyle () {\n      return {\n        '--handleWidth': this.settings.handleWidth,\n        '--handleHeight': this.settings.handleHeight,\n        '--handleColor': this.settings.handleColor\n      }\n    },\n    indicatorStyle () {\n      return {\n        '--indicatorWidth': this.settings.indicatorWidth,\n        '--indicatorHeight': this.settings.indicatorHeight,\n        '--indicatorColor': this.settings.indicatorColor\n      }\n    }\n  },\n  watch: {\n    options: function (to, from) {\n      // Oldschool loop because buble (ES5 transpiler) doesn't like for...of\n      const settingsList = Object.keys(to)\n      for (let i = 0; i < settingsList.length; i++) {\n        const currentSetting = settingsList[i]\n        this.settings[currentSetting] = to[currentSetting]\n      }\n\n      // Use this if buble can do it at some point\n      // for (const option of Object.keys(to)) {\n      //   this.settings[option] = to[option]\n      // }\n    }\n  },\n  mounted () {\n\n    if (isNaN(this.sliderValue)) {\n      console.error(`Expected Number for 'sliderValue', instead got ${this.sliderValue}.`)\n    }\n    if (isNaN(this.indicatorValue)) {\n      console.error(`Expected Number for 'indicatorValue', instead got ${this.indicatorValue}.`)\n    }\n\n    if (this.options) {\n      for (let opt in this.options) {\n        if (opt !== 'style') {\n          this.settings[opt] = this.options[opt]\n        }\n      }\n      // If sliderHeight is set, make handle and indicator take up full height\n      if (Object.keys(this.options).includes('sliderHeight')) {\n        this.settings.handleHeight = this.options['sliderHeight']\n        this.settings.indicatorHeight = this.options['sliderHeight']\n      }\n    }\n  }\n}\n</script>\n\n<!-- Add \"scoped\" attribute to limit CSS to this component only -->\n<style scoped>\n.slider-container {\n  position: relative;\n  width: var(--sliderWidth);\n  height: var(--sliderHeight);\n}\n\n/* From:\nhttps://www.w3schools.com/howto/howto_js_rangeslider.asp */\n.slider {\n  -webkit-appearance: none;\n  appearance: none;\n  width: 100%;\n  height: 100%;\n  background-color: var(--backgroundColor);\n  transform-origin: var(--transformOrigin);\n  transform: var(--rotation);\n  direction: var(--direction);\n}\n\n.synth-slider::-webkit-slider-thumb {\n  -webkit-appearance: none; /* Override default look */\n  appearance: none;\n  width: var(--handleWidth); /* Set a specific slider handle width */\n  height: var(--handleHeight); /* Slider handle height */\n  background-color: var(--handleColor); /* Green background */\n  border: none;\n  border-radius: 0;\n  cursor: pointer; /* Cursor on hover */\n}\n\n.synth-slider::-moz-range-thumb {\n  width: var(--handleWidth); /* Set a specific slider handle width */\n  height: var(--handleHeight); /* Slider handle height */\n  background-color: var(--handleColor); /* Green background */\n  border: none;\n  border-radius: 0;\n  cursor: pointer; /* Cursor on hover */\n}\n\n.modulation-indicator {\n  position: absolute;\n  background: none;\n  pointer-events: none;\n  top: 0;\n}\n\n.modulation-indicator::-webkit-slider-thumb {\n  -webkit-appearance: none; /* Override default look */\n  appearance: none;\n  width: var(--indicatorWidth); /* Set a specific slider handle width */\n  height: var(--indicatorHeight); /* Slider handle height */\n  background-color: var(--indicatorColor);\n  border: none;\n  border-radius: 0;\n}\n\n.modulation-indicator::-moz-range-thumb {\n  width: var(--indicatorWidth); /* Set a specific slider handle width */\n  height: var(--indicatorHeight); /* Slider handle height */\n  background: var(--indicatorColor);\n  border: none;\n  border-radius: 0;\n}\n\n</style>\n"]}, media: undefined });
 
     };
     /* scoped */
-    var __vue_scope_id__ = "data-v-909eb764";
+    var __vue_scope_id__ = "data-v-88c1ade8";
     /* module identifier */
     var __vue_module_identifier__ = undefined;
     /* functional template */
